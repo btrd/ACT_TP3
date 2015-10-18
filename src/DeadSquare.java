@@ -20,8 +20,24 @@ class DeadSquare {
 			}
 		}
 	}
+	
+	private void printArray() {
+		for(int i = 0; i < myDynamicArray.length; i++) {
+			for(int j = 0; j < myDynamicArray[i].length; j++) {
+				for(int k = 0; k < myDynamicArray[i][j].length; k++) {
+					for(int l = 0; l < myDynamicArray[i][j][k].length; l++) {
+						System.out.print(myDynamicArray[i][j][k][l] + " ");
+					}
+					System.out.println("");
+				}
+				System.out.println("");
+			}
+			System.out.println("");
+		}
+	}
 
 	Integer calcValue(Integer m, Integer n, Integer i, Integer j) {
+		//printArray();
 		if (m == 1 && n == 1) {
 			return 0;
 		} else {
