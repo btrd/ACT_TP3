@@ -5,39 +5,10 @@ class DeadSquare {
 
 	public DeadSquare(Integer m, Integer n, Integer i, Integer j) {
 		this.myDynamicArray = new Integer[m + 1][n + 1][m + 1][n + 1];
-		//intialiseArray();
 		System.out.println(this.calcValue(m, n, i, j));
-	}
-	
-	private void intialiseArray() {
-		for(int i = 0; i < myDynamicArray.length; i++) {
-			for(int j = 0; j < myDynamicArray[i].length; j++) {
-				for(int k = 0; k < myDynamicArray[i][j].length; k++) {
-					for(int l = 0; l < myDynamicArray[i][j][k].length; l++) {
-						myDynamicArray[i][j][k][l] = null;
-					}	
-				}	
-			}
-		}
-	}
-	
-	private void printArray() {
-		for(int i = 0; i < myDynamicArray.length; i++) {
-			for(int j = 0; j < myDynamicArray[i].length; j++) {
-				for(int k = 0; k < myDynamicArray[i][j].length; k++) {
-					for(int l = 0; l < myDynamicArray[i][j][k].length; l++) {
-						System.out.print(myDynamicArray[i][j][k][l] + " ");
-					}
-					System.out.println("");
-				}
-				System.out.println("");
-			}
-			System.out.println("");
-		}
 	}
 
 	Integer calcValue(Integer m, Integer n, Integer i, Integer j) {
-		//printArray();
 		if (m == 1 && n == 1) {
 			return 0;
 		} else {
@@ -117,7 +88,33 @@ class DeadSquare {
 		return max;
 	}
 
-	static void print(String s) {
-		System.out.println(s);
+	private void printArray() {
+		for(int i = 0; i < myDynamicArray.length; i++) {
+			for(int j = 0; j < myDynamicArray[i].length; j++) {
+				for(int k = 0; k < myDynamicArray[i][j].length; k++) {
+					for(int l = 0; l < myDynamicArray[i][j][k].length; l++) {
+						System.out.print(myDynamicArray[i][j][k][l] + " ");
+					}
+					System.out.println("");
+				}
+				System.out.println("");
+			}
+			System.out.println("");
+		}
+	}
+
+	private void countArray() {
+		int count = 0;
+		for(int i = 0; i < myDynamicArray.length; i++) {
+			for(int j = 0; j < myDynamicArray[i].length; j++) {
+				for(int k = 0; k < myDynamicArray[i][j].length; k++) {
+					for(int l = 0; l < myDynamicArray[i][j][k].length; l++) {
+						if(myDynamicArray[i][j][k][l] != null)
+							count++;
+					}
+				}
+			}
+		}
+		System.out.println(count);
 	}
 }
