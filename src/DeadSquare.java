@@ -18,19 +18,9 @@ class DeadSquare {
 			Integer max = 0;
 			for (Integer k = 1; k < m; k++) {
 				if (k <= i) { // on coupe avant le carré de la mort
-					if (this.myDynamicArray[m - k][n][i - k][j] == null) {
-						tmp = calcValue(m - k, n, i - k, j);
-						this.myDynamicArray[m - k][n][i - k][j] = tmp;
-					} else {
-						tmp = this.myDynamicArray[m - k][n][i - k][j];
-					}
+					tmp = searchValue(m - k, n, i - k, j);
 				} else { // on coupe aprés
-					if (this.myDynamicArray[k][n][i][j] == null) {
-						tmp = calcValue(k, n, i, j);
-						this.myDynamicArray[k][n][i][j] = tmp;
-					} else {
-						tmp = this.myDynamicArray[k][n][i][j];
-					}
+					tmp = searchValue(k, n, i, j);
 				}
 				array_value.add(tmp);
 				if (tmp <= 0)
@@ -38,20 +28,9 @@ class DeadSquare {
 			}
 			for (Integer l = 1; l < n; l++) {
 				if (l <= j) { // on coupe avant le carré de la mort
-					tmp = calcValue(m, n - l, i, j - l);
-					if (this.myDynamicArray[m][n - l][i][j - l] == null) {
-						tmp = calcValue(m, n - l, i, j - l);
-						this.myDynamicArray[m][n - l][i][j - l] = tmp;
-					} else {
-						tmp = this.myDynamicArray[m][n - l][i][j - l];
-					}
+					tmp = searchValue(m, n - l, i, j - l);
 				} else { // on coupe aprés
-					if (this.myDynamicArray[m][l][i][j] == null) {
-						tmp = calcValue(m, l, i, j);
-						this.myDynamicArray[m][l][i][j] = tmp;
-					} else {
-						tmp = this.myDynamicArray[m][l][i][j];
-					}
+					tmp = searchValue(m, l, i, j);
 				}
 				array_value.add(tmp);
 				if (tmp <= 0)
@@ -64,6 +43,18 @@ class DeadSquare {
 			}
 			return max;
 		}
+	}
+
+	Integer searchValue(Integer m, Integer n, Integer i, Integer j) {
+		int res;
+		// si la valeur n'est pas dans le tableau
+		if (this.myDynamicArray[m][n][i][j] == null) {
+			res = this.calcValue(m, n, i, j);
+			this.myDynamicArray[m][n][i][j] = res;
+		} else {
+			res = this.myDynamicArray[m][n][i][j];
+		}
+		return res;
 	}
 
 	// Return max value of the negatif element of an arrayList
