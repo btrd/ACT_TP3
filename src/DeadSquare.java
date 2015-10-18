@@ -1,11 +1,14 @@
 import java.util.ArrayList;
 
 class DeadSquare {
-	private Integer[][][][] myDynamicArray;
+	public Integer[][][][] myDynamicArray;
+	public int res;
 
-	public DeadSquare(Integer m, Integer n, Integer i, Integer j) {
-		this.myDynamicArray = new Integer[m + 1][n + 1][m + 1][n + 1];
-		System.out.println(this.calcValue(m, n, i, j));
+	public DeadSquare(Integer m, Integer n, Integer i, Integer j, Integer[][][][] myDynamicArray) {
+		this.myDynamicArray = myDynamicArray;
+		this.countArray();
+		this.res = this.calcValue(m, n, i, j);
+		//System.out.println(res);
 	}
 
 	Integer calcValue(Integer m, Integer n, Integer i, Integer j) {
@@ -120,11 +123,11 @@ class DeadSquare {
 
 	private void countArray() {
 		int count = 0;
-		for(int i = 0; i < myDynamicArray.length; i++) {
-			for(int j = 0; j < myDynamicArray[i].length; j++) {
-				for(int k = 0; k < myDynamicArray[i][j].length; k++) {
-					for(int l = 0; l < myDynamicArray[i][j][k].length; l++) {
-						if(myDynamicArray[i][j][k][l] != null)
+		for(int i = 0; i < this.myDynamicArray.length; i++) {
+			for(int j = 0; j < this.myDynamicArray[i].length; j++) {
+				for(int k = 0; k < this.myDynamicArray[i][j].length; k++) {
+					for(int l = 0; l < this.myDynamicArray[i][j][k].length; l++) {
+						if(this.myDynamicArray[i][j][k][l] != null)
 							count++;
 					}
 				}
