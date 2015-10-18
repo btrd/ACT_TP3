@@ -57,6 +57,30 @@ class DeadSquare {
 		return res;
 	}
 
+	Integer[] mirror(Integer m, Integer n, Integer i, Integer j) {
+		if (m < n) { //On fait une rotation pour que m soit toujours le max
+			int n_tmp = n;
+			n = m;
+			m = n_tmp;
+
+			int i_tmp = i;
+			i = j;
+			j = i_tmp; //c'est "faux" mais avec l'effet miroir c'est ok
+		}
+		if (i > (m/2)) {
+			i = -(i - m);
+		}
+		if (j > (n/2)) {
+			j = -(j - n);
+		}
+		Integer[] res = new Integer[4];
+		res[0] = m;
+		res[1] = n;
+		res[2] = i;
+		res[3] = j;
+		return res;
+	}
+
 	// Return max value of the negatif element of an arrayList
 	static Integer maxNeg(ArrayList<Integer> array) {
 		Integer max = Integer.MIN_VALUE;
