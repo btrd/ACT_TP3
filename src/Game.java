@@ -4,7 +4,7 @@ import java.util.Random;
 class Game {
   Scanner scan;
   Random r;
-  int m, n, i, j;
+  Integer m, n, i, j;
   Boolean computer_turn;
   DeadSquare deadSquare;
 
@@ -30,6 +30,9 @@ class Game {
     m = scan.nextInt();
     System.out.print("\t\tNombre de ligne: ");
     n = scan.nextInt();
+    
+    showChocolate();
+    
     System.out.print("Emplacement du carré de la mort:\n\t\tAléatoire (O)ui/(N)on: ");
     String alea = scan.next();
 
@@ -44,6 +47,7 @@ class Game {
       System.out.println("\t\tColonne numéro: "+i);
       System.out.println("\t\tLigne numéro: "+j);
     }
+    showChocolate();
     System.out.println("");
     if(r.nextInt(2) == 0) {
       System.out.println("L'ordinateur commence");
@@ -56,10 +60,6 @@ class Game {
 
   void loop_game() {
     while (m > 1 || n > 1) {
-      System.out.println("____________________________________\n");
-      System.out.println("Informations du tour");
-      showChocolate();
-      System.out.println("");
       if (computer_turn) {
         computerIA();
       } else {
@@ -72,14 +72,14 @@ class Game {
   void computerIA() {
     System.out.println("Début du tour de l'ordinateur");
 
-    int tmp_m, tmp_n, tmp_i, tmp_j, tmp_max;
+    Integer tmp_m, tmp_n, tmp_i, tmp_j, tmp_max;
     tmp_m = m;
     tmp_n = n;
     tmp_i = i;
     tmp_j = j;
     Boolean coupe_hori = false;
-    int coupe_value = 0;
-    int max = Integer.MIN_VALUE;
+    Integer coupe_value = 0;
+    Integer max = Integer.MIN_VALUE;
 
     for (Integer k = 1; k < m; k++) {
       System.out.print("."); //Montre que le prog est pas planté
@@ -146,6 +146,8 @@ class Game {
   }
 
   void playerChoice() {
+    showChocolate();
+
     Boolean coupe_vert;
 
     System.out.println("Début de votre tour:");
@@ -169,7 +171,7 @@ class Game {
     } else {
       System.out.print("\t\tLigne numéro: ");
     }
-    int coupe_value = scan.nextInt();
+    Integer coupe_value = scan.nextInt();
 
     if (coupe_vert) {
       if (coupe_value <= i) {
@@ -189,21 +191,22 @@ class Game {
   }
 
   void showChocolate() {
-    System.out.print("  ");
-    for (int k = 0; k < m; k++ ) {
+    System.out.println("");
+    System.out.print("\t  ");
+    for (Integer k = 0; k < m; k++ ) {
       if (k <= 10) {
         System.out.print(" ");
       }
       System.out.print(" " + k + " ");
     }
     System.out.println("");
-    for (int k = 1; k <= n; k++ ) {
-      System.out.print(k + " ");
+    for (Integer k = 0; k < n; k++ ) {
+      System.out.print("\t" + k + " ");
       if (k < 10)
         System.out.print(" ");
 
-      for (int l = 1; l <= m; l++ ) {
-        if (k == i && l == j) {
+      for (Integer l = 0; l < m; l++ ) {
+        if (l == i && k == j) {
           System.out.print("[X]");
         } else {
           System.out.print("[ ]");
@@ -212,5 +215,6 @@ class Game {
       }
       System.out.println("");
     }
+    System.out.println("");
   }
 }
