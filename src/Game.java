@@ -4,7 +4,7 @@ import java.util.Random;
 class Game {
   Scanner scan;
   Random r;
-  Integer m, n, i, j;
+  Integer nb_row, nb_col, x_death, y_death;
   Boolean computer_turn;
   DeadSquare deadSquare;
 
@@ -13,7 +13,7 @@ class Game {
     r = new Random();
     initialisation();
 
-    deadSquare = new DeadSquare(m, n);
+    deadSquare = new DeadSquare(nb_row, nb_col);
     
     loop_game();
 
@@ -26,10 +26,11 @@ class Game {
 
   void initialisation() {
     System.out.println("Taille de la tablette de chocolat");
+
     System.out.print("\t\tNombre de colonne: ");
-    m = scan.nextInt();
+    nb_row = scan.nextInt();
     System.out.print("\t\tNombre de ligne: ");
-    n = scan.nextInt();
+    nb_col = scan.nextInt();
     
     showChocolate();
     
@@ -38,17 +39,18 @@ class Game {
 
     if (alea.toLowerCase().equals("n") || alea.toLowerCase().equals("non")) {
       System.out.print("\t\tColonne numéro: ");
-      i = scan.nextInt();
+      x_death = scan.nextInt();
       System.out.print("\t\tLigne numéro: ");
-      j = scan.nextInt();
+      y_death = scan.nextInt();
     } else {
-      i = r.nextInt(m);
-      j = r.nextInt(n);
-      System.out.println("\t\tColonne numéro: "+i);
-      System.out.println("\t\tLigne numéro: "+j);
+      x_death = r.nextInt(nb_row);
+      y_death = r.nextInt(nb_col);
+      System.out.println("\t\tColonne numéro: "+x_death);
+      System.out.println("\t\tLigne numéro: "+y_death);
     }
+
     showChocolate();
-    System.out.println("");
+
     if(r.nextInt(2) == 0) {
       System.out.println("L'ordinateur commence");
       computer_turn = true;
@@ -59,7 +61,7 @@ class Game {
   }
 
   void loop_game() {
-    while (m > 1 || n > 1) {
+    while (nb_row > 1 || nb_col > 1) {
       if (computer_turn) {
         computerIA();
       } else {
@@ -72,64 +74,64 @@ class Game {
   void computerIA() {
     System.out.println("Début du tour de l'ordinateur");
 
-    Integer tmp_m, tmp_n, tmp_i, tmp_j, tmp_max;
-    tmp_m = m;
-    tmp_n = n;
-    tmp_i = i;
-    tmp_j = j;
+    Integer tmp_max;
+    Integer tmp_nb_row = nb_row;
+    Integer tmp_nb_col = nb_col;
+    Integer tmp_x_death = x_death;
+    Integer tmp_y_death = y_death;
     Boolean coupe_hori = false;
     Integer coupe_value = 0;
     Integer max = Integer.MIN_VALUE;
 
-    for (Integer k = 1; k < m; k++) {
+    for (Integer k = 1; k < nb_row; k++) {
       System.out.print("."); //Montre que le prog est pas planté
-      if (k <= i) { // on coupe avant le carré de la mort
-        tmp_max = deadSquare.calcValue(m - k, n, i - k, j);
+      if (k <= x_death) { // on coupe avant le carré de la mort
+        tmp_max = deadSquare.calcValue(nb_row - k, nb_col, x_death - k, y_death);
         if (tmp_max > max) {
           coupe_hori = false;
           coupe_value = k;
           max = tmp_max;
-          tmp_m = m-k;
-          tmp_n = n;
-          tmp_i = i-k;
-          tmp_j = j;
+          tmp_nb_row = nb_row-k;
+          tmp_nb_col = nb_col;
+          tmp_x_death = x_death-k;
+          tmp_y_death = y_death;
         }
       } else { // on coupe aprés
-        tmp_max = deadSquare.calcValue(k, n, i, j);
+        tmp_max = deadSquare.calcValue(k, nb_col, x_death, y_death);
         if (tmp_max > max) {
           coupe_hori = false;
           coupe_value = k;
           max = tmp_max;
-          tmp_m = k;
-          tmp_n = n;
-          tmp_i = i;
-          tmp_j = j;
+          tmp_nb_row = k;
+          tmp_nb_col = nb_col;
+          tmp_x_death = x_death;
+          tmp_y_death = y_death;
         }
       }
     }
-    for (Integer l = 1; l < n; l++) {
+    for (Integer l = 1; l < nb_col; l++) {
       System.out.print("."); //Montre que le prog est pas planté
-      if (l <= j) { // on coupe avant le carré de la mort
-        tmp_max = deadSquare.calcValue(m, n - l, i, j - l);
+      if (l <= y_death) { // on coupe avant le carré de la mort
+        tmp_max = deadSquare.calcValue(nb_row, nb_col - l, x_death, y_death - l);
         if (tmp_max > max) {
           coupe_hori = true;
           coupe_value = l;
           max = tmp_max;
-          tmp_m = m;
-          tmp_n = n-l;
-          tmp_i = i;
-          tmp_j = j-l;
+          tmp_nb_row = nb_row;
+          tmp_nb_col = nb_col-l;
+          tmp_x_death = x_death;
+          tmp_y_death = y_death-l;
         }
       } else { // on coupe aprés
-        tmp_max = deadSquare.calcValue(m, l, i, j);
+        tmp_max = deadSquare.calcValue(nb_row, l, x_death, y_death);
         if (tmp_max > max) {
           coupe_hori = true;
           coupe_value = l;
           max = tmp_max;
-          tmp_m = m;
-          tmp_n = l;
-          tmp_i = i;
-          tmp_j = j;
+          tmp_nb_row = nb_row;
+          tmp_nb_col = l;
+          tmp_x_death = x_death;
+          tmp_y_death = y_death;
         }
       }
     }
@@ -139,10 +141,10 @@ class Game {
     } else {
       System.out.println("Ordinateur coupe verticalement en " + coupe_value);
     }
-    m = tmp_m;
-    n = tmp_n;
-    i = tmp_i;
-    j = tmp_j;
+    nb_row = tmp_nb_row;
+    nb_col = tmp_nb_col;
+    x_death = tmp_x_death;
+    y_death = tmp_y_death;
   }
 
   void playerChoice() {
@@ -151,10 +153,10 @@ class Game {
     Boolean coupe_vert;
 
     System.out.println("Début de votre tour:");
-    if (m < 2) {
+    if (nb_row < 2) {
       System.out.println("\t\tCoupe horizontale");
       coupe_vert = false;
-    } else if (n < 2) {
+    } else if (nb_col < 2) {
       System.out.println("\t\tCoupe vertical");
       coupe_vert = true;
     } else {
@@ -174,18 +176,18 @@ class Game {
     Integer coupe_value = scan.nextInt();
 
     if (coupe_vert) {
-      if (coupe_value <= i) {
-        m = m - coupe_value;
-        i = i - coupe_value;
+      if (coupe_value <= x_death) {
+        nb_row = nb_row - coupe_value;
+        x_death = x_death - coupe_value;
       } else {
-        m = coupe_value;
+        nb_row = coupe_value;
       }
     } else {
-      if (coupe_value <= j) {
-        n = n - coupe_value;
-        j = j - coupe_value;
+      if (coupe_value <= y_death) {
+        nb_col = nb_col - coupe_value;
+        y_death = y_death - coupe_value;
       } else {
-        n = coupe_value;
+        nb_col = coupe_value;
       }
     }
   }
@@ -193,20 +195,20 @@ class Game {
   void showChocolate() {
     System.out.println("");
     System.out.print("\t  ");
-    for (Integer k = 0; k < m; k++ ) {
+    for (Integer k = 0; k < nb_row; k++ ) {
       if (k <= 10) {
         System.out.print(" ");
       }
       System.out.print(" " + k + " ");
     }
     System.out.println("");
-    for (Integer k = 0; k < n; k++ ) {
+    for (Integer k = 0; k < nb_col; k++ ) {
       System.out.print("\t" + k + " ");
       if (k < 10)
         System.out.print(" ");
 
-      for (Integer l = 0; l < m; l++ ) {
-        if (l == i && k == j) {
+      for (Integer l = 0; l < nb_row; l++ ) {
+        if (l == x_death && k == y_death) {
           System.out.print("[X]");
         } else {
           System.out.print("[ ]");
