@@ -2,11 +2,11 @@ import java.util.ArrayList;
 
 public class Main {
 	public static void main(String[] args){
-    onCase();
+    // onCase();
     // find127();
 
     // Jeux
-    // Game session = new Game();
+    Game session = new Game();
 	}
   static public void onCase() {
     Integer res = 0;

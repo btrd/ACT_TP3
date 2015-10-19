@@ -55,11 +55,11 @@ class Game {
   }
 
   void loop_game() {
-    while (m > 1 && n > 1) {
+    while (m > 1 || n > 1) {
       System.out.println("____________________________________\n");
       System.out.println("Informations du tour");
-      System.out.println("\t\t\tm: " + m + "; n: " + n);
-      System.out.println("\t\t\ti: " + i + "; j: " + j);
+      System.out.println("\t\tm: " + m + "; n: " + n);
+      System.out.println("\t\ti: " + i + "; j: " + j);
       System.out.println("");
       if (computer_turn) {
         computerIA();
@@ -147,19 +147,32 @@ class Game {
   }
 
   void playerChoice() {
-    System.out.println("Début de votre tour:");
+    Boolean coupe_vert;
 
-    System.out.print("\t\tCoupe (h)orizontale ou (v)ertical ? ");
-    String alea = scan.next();
-    Boolean coupe_hori;
-    if (alea.toLowerCase().equals("h") || alea.toLowerCase().equals("horizontale")) {
-      coupe_hori = true;
+    System.out.println("Début de votre tour:");
+    if (m < 2) {
+      System.out.println("\t\tCoupe horizontale");
+      coupe_vert = false;
+    } else if (n < 2) {
+      System.out.println("\t\tCoupe vertical");
+      coupe_vert = true;
     } else {
-      coupe_hori = false;
+      System.out.print("\t\tCoupe (h)orizontale ou (v)ertical ? ");
+      String alea = scan.next();
+      if (alea.toLowerCase().equals("v") || alea.toLowerCase().equals("vertical")) {
+        coupe_vert = true;
+      } else {
+        coupe_vert = false;
+      }
     }
-    System.out.print("\t\tValeur (max " + (m-1) + ") ? ");
+    if (coupe_vert) {
+      System.out.print("\t\tValeur (minimum 1, maximum " + (m-1) + ") ? ");
+    } else {
+      System.out.print("\t\tValeur (minimum 1, maximum " + (n-1) + ") ? ");
+    }
+
     int coupe_value = scan.nextInt();
-    if (coupe_hori) {
+    if (coupe_vert) {
       if (coupe_value <= i) {
         m = m - coupe_value;
         i = i - coupe_value;
