@@ -4,11 +4,13 @@ class DeadSquare {
 	public Integer[][][][] myDynamicArray;
 	public int res;
 
-	public DeadSquare(Integer m, Integer n, Integer i, Integer j, Integer[][][][] myDynamicArray) {
-		this.myDynamicArray = myDynamicArray;
-		this.countArray();
+	public DeadSquare(Integer m, Integer n) {
+		this.myDynamicArray = new Integer[m + 1][n + 1][m + 1][n + 1];
+	}
+
+	Integer getValue(Integer m, Integer n, Integer i, Integer j) {
 		this.res = this.calcValue(m, n, i, j);
-		//System.out.println(res);
+		return this.res;
 	}
 
 	Integer calcValue(Integer m, Integer n, Integer i, Integer j) {
@@ -51,6 +53,11 @@ class DeadSquare {
 	Integer searchValue(Integer m, Integer n, Integer i, Integer j) {
 		int res;
 		// si la valeur n'est pas dans le tableau
+		Integer[] index = this.mirror(m, n, i, j);
+		m = index[0];
+		n = index[1];
+		i = index[2];
+		j = index[3];
 		if (this.myDynamicArray[m][n][i][j] == null) {
 			res = this.calcValue(m, n, i, j);
 			this.myDynamicArray[m][n][i][j] = res;
@@ -70,12 +77,14 @@ class DeadSquare {
 			i = j;
 			j = i_tmp; //c'est "faux" mais avec l'effet miroir c'est ok
 		}
-		if (i > (m/2)) {
-			i = -(i - m);
+
+		if (i >= (m/2)) {
+			i = -(i - m) - 1;
 		}
-		if (j > (n/2)) {
-			j = -(j - n);
+		if (j >= (n/2)) {
+			j = -(j - n) - 1;
 		}
+
 		Integer[] res = new Integer[4];
 		res[0] = m;
 		res[1] = n;

@@ -1,23 +1,37 @@
+import java.util.ArrayList;
+
 public class Main {
 	public static void main(String[] args){
-    int m = 127;
-    int n = 127;
-    Integer[][][][] myDynamicArray = new Integer[m + 1][n + 1][m + 1][n + 1];
-    // DeadSquare myExo = new DeadSquare(m, n, 48, 52, myDynamicArray);
-    // System.out.println(myExo.res);
-    // DeadSquare myExo2 = new DeadSquare(m, n, 48, 52, myExo.myDynamicArray);
-    // System.out.println(myExo2.res);
-    DeadSquare myExo;
-    for (int i = 0; i < m; i++) {
-      for (int j = 0; j < n; j++) {
-        myExo = new DeadSquare(m, n, i, j, myDynamicArray);
-        if (myExo.res == 127) {
-          System.out.println("FOOOOOOUUUUUUND i:" + i + "; j:" + j);
-        } else {
-          System.out.println("i:" + i + "; j:" + j);
+    Integer res = 0;
+
+    Integer m = 127;
+    Integer n = 127;
+
+    ArrayList<Integer> res_ij = new ArrayList<Integer>();
+    DeadSquare myExo = new DeadSquare(m, n);
+
+    // Integer i = 40;
+    // Integer j = 52;
+    // res = myExo.getValue(m, n, i, j);
+    // System.out.println(res);
+
+    for (Integer i = 0; i < m; i++) {
+      System.out.println("i:" + i + "; j:0");
+      for (Integer j = 0; j < n; j++) {
+        res = myExo.getValue(m, n, i, j);
+        if (res == 127) {
+          res_ij.add(i);
+          res_ij.add(j);
+          System.out.println("FOUND i:" + i + "; j:" + j);
         }
-        myDynamicArray = myExo.myDynamicArray;
       }
+    }
+    System.out.println("");
+    System.out.println("Résultats:");
+    for (int k = 0; k < res_ij.size(); k++) {
+      System.out.print("i: " + res_ij.get(k));
+      k++;
+      System.out.println(";j: " + res_ij.get(k));
     }
 	}
 }
