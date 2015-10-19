@@ -5,12 +5,12 @@ class DeadSquare {
 	int res;
 
 	public DeadSquare(Integer m, Integer n) {
-		this.myDynamicArray = new Integer[m + 1][n + 1][m + 1][n + 1];
+		myDynamicArray = new Integer[m + 1][n + 1][m + 1][n + 1];
 	}
 
 	Integer getValue(Integer m, Integer n, Integer i, Integer j) {
-		this.res = this.calcValue(m, n, i, j);
-		return this.res;
+		res = calcValue(m, n, i, j);
+		return res;
 	}
 
 	Integer calcValue(Integer m, Integer n, Integer i, Integer j) {
@@ -53,16 +53,16 @@ class DeadSquare {
 	Integer searchValue(Integer m, Integer n, Integer i, Integer j) {
 		int res;
 		// si la valeur n'est pas dans le tableau
-		Integer[] index = this.mirror(m, n, i, j);
+		Integer[] index = mirror(m, n, i, j);
 		m = index[0];
 		n = index[1];
 		i = index[2];
 		j = index[3];
-		if (this.myDynamicArray[m][n][i][j] == null) {
-			res = this.calcValue(m, n, i, j);
-			this.myDynamicArray[m][n][i][j] = res;
+		if (myDynamicArray[m][n][i][j] == null) {
+			res = calcValue(m, n, i, j);
+			myDynamicArray[m][n][i][j] = res;
 		} else {
-			res = this.myDynamicArray[m][n][i][j];
+			res = myDynamicArray[m][n][i][j];
 		}
 		return res;
 	}
@@ -132,11 +132,11 @@ class DeadSquare {
 
 	private void countArray() {
 		int count = 0;
-		for(int i = 0; i < this.myDynamicArray.length; i++) {
-			for(int j = 0; j < this.myDynamicArray[i].length; j++) {
-				for(int k = 0; k < this.myDynamicArray[i][j].length; k++) {
-					for(int l = 0; l < this.myDynamicArray[i][j][k].length; l++) {
-						if(this.myDynamicArray[i][j][k][l] != null)
+		for(int i = 0; i < myDynamicArray.length; i++) {
+			for(int j = 0; j < myDynamicArray[i].length; j++) {
+				for(int k = 0; k < myDynamicArray[i][j].length; k++) {
+					for(int l = 0; l < myDynamicArray[i][j][k].length; l++) {
+						if(myDynamicArray[i][j][k][l] != null)
 							count++;
 					}
 				}
