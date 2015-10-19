@@ -11,31 +11,31 @@ public class Main {
   static public void onCase() {
     Integer res = 0;
 
-    Integer m = 100;
-    Integer n = 100;
+    Integer nb_col = 100;
+    Integer nb_row = 100;
 
-    Integer i = 40;
+    Integer i = 48;
     Integer j = 52;
 
-    DeadSquare myExo = new DeadSquare(m, n);
+    DeadSquare myExo = new DeadSquare(nb_col, nb_row);
 
-    res = myExo.getValue(m, n, i, j);
+    res = myExo.getValue(nb_col, nb_row, i, j);
     System.out.println(res);
   }
 
   static public void find127() {
     Integer res = 0;
 
-    Integer m = 127;
-    Integer n = 127;
+    Integer nb_col = 127;
+    Integer nb_row = 127;
 
     ArrayList<Integer> res_ij = new ArrayList<Integer>();
-    DeadSquare myExo = new DeadSquare(m, n);
+    DeadSquare myExo = new DeadSquare(nb_col, nb_row);
 
-    for (Integer i = 0; i < m; i++) {
+    for (Integer i = 0; i < nb_col; i++) {
       System.out.println("i:" + i + "; j:0");
-      for (Integer j = 0; j < n; j++) {
-        res = myExo.getValue(m, n, i, j);
+      for (Integer j = 0; j < nb_row; j++) {
+        res = myExo.getValue(nb_col, nb_row, i, j);
         if (res == 127) {
           res_ij.add(i);
           res_ij.add(j);
