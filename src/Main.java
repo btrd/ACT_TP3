@@ -2,17 +2,17 @@ import java.util.ArrayList;
 
 public class Main {
 	public static void main(String[] args){
-    // onCase();
+    onCase();
     // find127();
 
     // Jeux
-    Game session = new Game();
+    // Game session = new Game();
 	}
   static public void onCase() {
     Integer res = 0;
 
-    Integer m = 127;
-    Integer n = 127;
+    Integer m = 100;
+    Integer n = 100;
 
     Integer i = 40;
     Integer j = 52;
