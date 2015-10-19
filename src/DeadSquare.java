@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 class DeadSquare {
-	public Integer[][][][] myDynamicArray;
-	public int res;
+	Integer[][][][] myDynamicArray;
+	int res;
 
 	public DeadSquare(Integer m, Integer n) {
 		this.myDynamicArray = new Integer[m + 1][n + 1][m + 1][n + 1];
