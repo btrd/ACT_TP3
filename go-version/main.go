@@ -5,9 +5,14 @@ import (
 	"math"
 )
 
+type dynamic struct {
+	set bool
+	value int
+}
+
 func main() {
 
-	fmt.Println(findSolution(5, 5, 4, 1))
+	fmt.Println(findSolution(100, 100, 50, 50))
 }
 
 func findSolution(nbLine int, nbRow int, coordX int, coordY int) int {
@@ -16,17 +21,14 @@ func findSolution(nbLine int, nbRow int, coordX int, coordY int) int {
 	return calcValue(nbLine, nbRow, coordX, coordY, tab)
 }
 
-func initArray(nbLine int, nbRow int) *[][][][]int {
-	tab := make([][][][]int, nbLine + 1)
+func initArray(nbLine int, nbRow int) *[][][][]dynamic {
+	tab := make([][][][]dynamic, nbLine + 1)
 	for i := range tab {
-		tab[i] = make([][][]int, nbRow + 1)
+		tab[i] = make([][][]dynamic, nbRow + 1)
 		for j := range tab[i] {
-			tab[i][j] = make([][]int, nbLine + 1)
+			tab[i][j] = make([][]dynamic, nbLine + 1)
 			for k := range tab[i][j] {
-				tab[i][j][k] = make([]int, nbRow + 1)
-				for l := range tab[i][j][k] {
-					tab[i][j][k][l] = math.MinInt64
-				}
+				tab[i][j][k] = make([]dynamic, nbRow + 1)
 			}
 		}
 	}
@@ -34,94 +36,105 @@ func initArray(nbLine int, nbRow int) *[][][][]int {
 	return &tab
 }
 
-func printArray(tab *[][][][]int) {
-	for i := range *tab {
-		for j := range (*tab)[i] {
-			for k := range (*tab)[i][j] {
-				fmt.Println((*tab)[i][j][k])
-			}
-			fmt.Println()
-		}
-		fmt.Println()
-	}
-
-}
-
-func calcValue(nbLine int, nbRow int, coordX int, coordY int, tab *[][][][]int) int {
+func calcValue(nbLine int, nbRow int, coordX int, coordY int, tab *[][][][]dynamic) int {
 	if nbLine == 1 && nbRow == 1 {
 		return 0
-	} else {
-
-		arrayOfValues := make([]int, nbLine + nbRow)
-		tmp := 0
-		max := 0
-		neg := false
-		idArray := 0
-
-		for iLine := 1; iLine < nbLine; iLine++ {
-			if iLine <= coordX {
-				// if (*tab)[nbLine - iLine][nbRow][coordX - iLine][coordY] == math.MinInt64 {
-
-					tmp = calcValue(nbLine - iLine, nbRow, coordX - iLine, coordY, tab)
-				// 	(*tab)[nbLine - iLine][nbRow][coordX - iLine][coordY] = tmp
-				// } else {
-				// 	tmp = (*tab)[nbLine - iLine][nbRow][coordX - iLine][coordY]
-				// }
-			} else {
-				// if (*tab)[nbLine][nbRow][coordX][coordY] == math.MinInt64 {
-					tmp = calcValue(iLine, nbRow, coordX, coordY, tab)
-				// 	(*tab)[nbLine][nbRow][coordX][coordY] = tmp
-				// } else {
-				// 	tmp = (*tab)[nbLine][nbRow][coordX][coordY]
-				// }
-			}
-			arrayOfValues[idArray] = tmp
-			idArray++
-			if tmp <= 0 {
-				neg = true
-			}			
-		}
-
-		
-
-		for iRow := 1; iRow < nbRow; iRow++ {
-			if iRow <= coordY {
-				// if (*tab)[nbLine][nbRow - iRow][coordX][coordY - iRow] == math.MinInt64 {
-					tmp = calcValue(nbLine, nbRow - iRow, coordX, coordY - iRow, tab)
-				// 	(*tab)[nbLine][nbRow - iRow][coordX][coordY - iRow] = tmp
-				// } else {
-				// 	tmp = (*tab)[nbLine][nbRow - iRow][coordX][coordY - iRow]
-				// }
-			} else {
-				// if (*tab)[nbLine][nbRow][coordX][coordY] == math.MinInt64 {
-					tmp = calcValue(nbLine, iRow, coordX, coordY, tab)
-				// 	(*tab)[nbLine][nbRow][coordX][coordY] = tmp
-				// } else {
-				// 	tmp = (*tab)[nbLine][nbRow][coordX][coordY]
-				// }
-			}
-
-			arrayOfValues[idArray] = tmp
-			idArray++
-			if tmp <= 0 {
-				neg = true
-			}
-
-		}
-		if neg {
-			max = (-1) * (maxNeg(arrayOfValues[:idArray]) - 1)
-		} else {
-			max = (-1) * (maxPos(arrayOfValues[:idArray]) + 1)
-		}
-
-		// fmt.Println(arrayOfValues[:idArray])
-		// fmt.Println(neg)
-		// fmt.Printf("Max : %d", max)
-		//printArray(tab)
-		// fmt.Println(max)
-
-		return max
 	}
+	
+	arrayOfValues := make([]int, nbLine + nbRow)
+	max := 0
+	neg := false
+	idArray := 0
+
+	neg = cutVertical(nbLine, nbRow, coordX, coordY, &arrayOfValues, &idArray, tab) ||
+		cutHorizontal(nbLine, nbRow, coordX, coordY, &arrayOfValues, &idArray, tab)
+	
+	if neg {
+		max = (-1) * (maxNeg(arrayOfValues[:idArray]) - 1)
+	} else {
+		max = (-1) * (maxPos(arrayOfValues[:idArray]) + 1)
+	}
+
+	return max
+}
+
+func cutVertical(nbLine int, nbRow int, coordX int, coordY int, arrayOfValues *[]int, idArray *int, tab *[][][][]dynamic) bool {
+	neg := false
+	tmp := 0
+
+	for iLine := 1; iLine < nbLine; iLine++ {
+		if iLine <= coordX {
+			tmp = saveAnswer(nbLine - iLine, nbRow, coordX - iLine, coordY, tab)
+		} else {
+			tmp = saveAnswer(iLine, nbRow, coordX, coordY, tab)
+		}
+		(*arrayOfValues)[*idArray] = tmp
+		(*idArray)++
+		if tmp <= 0 {
+			neg = true
+		}			
+	}
+
+	return neg
+}
+
+func cutHorizontal(nbLine int, nbRow int, coordX int, coordY int, arrayOfValues *[]int, idArray *int, tab *[][][][]dynamic) bool {
+	neg := false
+	tmp := 0
+
+	for iRow := 1; iRow < nbRow; iRow++ {
+		if iRow <= coordY {
+			tmp = saveAnswer(nbLine, nbRow - iRow, coordX, coordY - iRow, tab)
+		} else {
+			tmp = saveAnswer(nbLine, iRow, coordX, coordY, tab)
+		}
+
+		(*arrayOfValues)[*idArray] = tmp
+		*idArray++
+		if tmp <= 0 {
+			neg = true
+		}
+	}
+
+	return neg
+}
+
+func saveAnswer(nbLine int, nbRow int, coordX int, coordY int, tab *[][][][]dynamic) int {
+	tmp := 0
+
+	nbLine, nbRow, coordX, coordY = mirror(nbLine, nbRow, coordX, coordY)
+
+	if !(*tab)[nbLine][nbRow][coordX][coordY].set {
+		tmp = calcValue(nbLine, nbRow, coordX, coordY, tab)
+		(*tab)[nbLine][nbRow][coordX][coordY].value = tmp
+		(*tab)[nbLine][nbRow][coordX][coordY].set = true
+	} else {
+		tmp = (*tab)[nbLine][nbRow][coordX][coordY].value
+	}
+
+	return tmp
+}
+
+func mirror(nbLine int, nbRow int, coordX int, coordY int) (int, int, int ,int) {
+	if nbLine < nbRow {
+		nbRow_tmp := nbRow
+		coordX_tmp := coordX
+
+		nbRow = nbLine
+		nbLine = nbRow_tmp
+
+		coordX = coordY
+		coordY = coordX_tmp
+	}
+
+	if coordX >= (nbLine / 2) {
+		coordX = -(coordX - nbLine) - 1
+	}
+	if coordY >= (nbRow / 2) {
+		coordY = -(coordY - nbRow) - 1
+	}
+
+	return nbLine, nbRow, coordX, coordY
 }
 
 func maxNeg(array []int) int {
