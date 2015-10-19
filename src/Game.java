@@ -25,24 +25,24 @@ class Game {
   }
 
   void initialisation() {
-    System.out.println("Taille de la tablette:");
-    System.out.print("\t\tm: ");
+    System.out.println("Taille de la tablette de chocolat");
+    System.out.print("\t\tNombre de colonne: ");
     m = scan.nextInt();
-    System.out.print("\t\tn: ");
+    System.out.print("\t\tNombre de ligne: ");
     n = scan.nextInt();
     System.out.print("Emplacement du carré de la mort:\n\t\tAléatoire (O)ui/(N)on: ");
     String alea = scan.next();
 
     if (alea.toLowerCase().equals("n") || alea.toLowerCase().equals("non")) {
-      System.out.print("\t\ti: ");
+      System.out.print("\t\tColonne numéro: ");
       i = scan.nextInt();
-      System.out.print("\t\tj: ");
+      System.out.print("\t\tLigne numéro: ");
       j = scan.nextInt();
     } else {
       i = r.nextInt(m);
       j = r.nextInt(n);
-      System.out.println("\t\ti: "+i);
-      System.out.println("\t\tj: "+j);
+      System.out.println("\t\tColonne numéro: "+i);
+      System.out.println("\t\tLigne numéro: "+j);
     }
     System.out.println("");
     if(r.nextInt(2) == 0) {
@@ -58,8 +58,7 @@ class Game {
     while (m > 1 || n > 1) {
       System.out.println("____________________________________\n");
       System.out.println("Informations du tour");
-      System.out.println("\t\tm: " + m + "; n: " + n);
-      System.out.println("\t\ti: " + i + "; j: " + j);
+      showChocolate();
       System.out.println("");
       if (computer_turn) {
         computerIA();
@@ -166,12 +165,12 @@ class Game {
       }
     }
     if (coupe_vert) {
-      System.out.print("\t\tValeur (minimum 1, maximum " + (m-1) + ") ? ");
+      System.out.print("\t\tColonne numéro: ");
     } else {
-      System.out.print("\t\tValeur (minimum 1, maximum " + (n-1) + ") ? ");
+      System.out.print("\t\tLigne numéro: ");
     }
-
     int coupe_value = scan.nextInt();
+
     if (coupe_vert) {
       if (coupe_value <= i) {
         m = m - coupe_value;
@@ -186,6 +185,32 @@ class Game {
       } else {
         n = coupe_value;
       }
+    }
+  }
+
+  void showChocolate() {
+    System.out.print("  ");
+    for (int k = 0; k < m; k++ ) {
+      if (k <= 10) {
+        System.out.print(" ");
+      }
+      System.out.print(" " + k + " ");
+    }
+    System.out.println("");
+    for (int k = 1; k <= n; k++ ) {
+      System.out.print(k + " ");
+      if (k < 10)
+        System.out.print(" ");
+
+      for (int l = 1; l <= m; l++ ) {
+        if (k == i && l == j) {
+          System.out.print("[X]");
+        } else {
+          System.out.print("[ ]");
+        }
+        System.out.print(" ");
+      }
+      System.out.println("");
     }
   }
 }
